@@ -20,10 +20,22 @@ import { useNavigate } from "react-router-dom";
           'Content-Type': 'application/json'
         },
         body: JSON.stringify(data)
-      });
-      navigate("/products");
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.message === 'Authentication success') {
+          navigate("/products");
+        } else {
+          alert('Veuillez souscrire pour accéder à notre application.');
+        }
+      })
+      .catch(error => console.error(error))
+
     };
-  
+    function handleClick() {
+      navigate('/register');
+    }
+
     return (
       <form onSubmit={handleSubmit} >
         <div class="boxR">
@@ -31,7 +43,7 @@ import { useNavigate } from "react-router-dom";
         <input class="input2"  type="email" id="email" value={email} onChange={(e) => setEmail(e.target.value)} required/>
         <label htmlFor="password">Password:</label>
         <input  class="input2" type="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)} required/>
-        <h5 class="indice2">Sing Up</h5><br></br>
+        <button class="btnR" onClick={handleClick}>Register</button>
         <button class="btnR" type="submit">Login</button>
         
         </div>
