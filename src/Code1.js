@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import './App.css';
 
 function PostProduct() {
+     const token=localStorage.getItem('token')
      const [newProduct, setNewProduct] = useState({
         name:'',
         description:'',
@@ -16,6 +17,7 @@ function PostProduct() {
             method: 'POST',  
             headers: {
                 'Content-Type': 'application/json',
+                "Authorization": `Bearer ${token}`
             },
             body: JSON.stringify({...newProduct}),
             
@@ -48,7 +50,7 @@ function PostProduct() {
             Stock :
             <input type="checkbox" checked={newProduct.stock} value={newProduct.stock}onChange={(event) =>setNewProduct({ ...newProduct, stock: event.target.checked})}/>
           </label><br/>
-          <button type="submit">Ajouter</button>
+          {token && <button type="submit">Ajouter</button>}
         </form>
       </div>
     </div>

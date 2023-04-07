@@ -4,11 +4,13 @@ import PutProduct from './Code2';
 import './App.css';
 
 
+
+
 function Products() {
     const [products, setProducts] = useState([]);
     const [produitModifier , setProduitModifier]=useState(null);
     const [searchTerm, setSearchTerm] = useState('');
-    
+    const token = localStorage.getItem('token');
     
 
     useEffect(() => {
@@ -32,7 +34,8 @@ function Products() {
       fetch(`http://localhost:5000/supproducts/${id}`, {
       method: 'DELETE',
       headers: {
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}`
       },
       })
       .then((response) => response.json())
@@ -42,7 +45,9 @@ function Products() {
       })
       .catch((error) => console.log(error));
       GetAllProduct();
-      };
+
+    };
+    
     
     
     return (
@@ -67,10 +72,12 @@ function Products() {
                   <td>{product.description}</td>
                   <td>{product.price}</td>
                   <td>{product.stock?"en stock": "pas en stock"}</td>
+                  
                   <td>
-                    <button onClick={()=>setProduitModifier(product)} class="but1" >modifier</button>
-                    <button onClick={()=>DeleteProduct(product.id)} class="but2">Supprimer</button>
+                  {token && <button onClick={()=>setProduitModifier(product)} class="but1" >modifier</button>}
+                  {token && <button onClick={()=>DeleteProduct(product.id)} class="but2">Supprimer</button>}
                   </td>
+                  
                 </tr>
               ))}
             </tbody>
@@ -88,7 +95,7 @@ function Products() {
             /> 
 
       )}
-      
+         
         </div>
     );
 

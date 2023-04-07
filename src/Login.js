@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
  function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const token =localStorage.getItem('token')
     const navigate = useNavigate();
   
     function handleSubmit (event) {
@@ -16,14 +17,16 @@ import { useNavigate } from "react-router-dom";
       }
        fetch("http://localhost:5000/login", {
         method: "POST",
+        body: JSON.stringify(data),
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(data)
+        
       })
-      .then(response => response.json())
-      .then(data => {
-        if (data.message === 'Authentication success') {
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.token !=='') {
+          localStorage.setItem('token',data.token)
           navigate("/products");
         } else {
           alert('Veuillez souscrire pour accéder à notre application.');
@@ -53,16 +56,7 @@ import { useNavigate } from "react-router-dom";
   export default Login;
 
 
-//   fetch("VOTRE_URL_PROTEGEE", {
-//     method: "GET",
-//     headers: {
-//           "Content-Type": "application/json",
-//           Authorization: `Bearer ${token}`
-//     },
-//  })
-//  .then((response) => response.json())
-//  .then((data) => console.log(data))
-//  .catch((error) => console.error(error));
+
  
   
   
